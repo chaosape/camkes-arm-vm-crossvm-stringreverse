@@ -1,0 +1,41 @@
+/*
+ * Copyright 2017, Data61
+ * Commonwealth Scientific and Industrial Research Organisation (CSIRO)
+ * ABN 41 687 119 230.
+ *
+ * This software may be distributed and modified according to the terms of
+ * the BSD 2-Clause license. Note that NO WARRANTY is provided.
+ * See "LICENSE_BSD2.txt" for details.
+ *
+ * @TAG(DATA61_BSD)
+ */
+
+import <std_connector.camkes>;
+import <VM/vm_common.camkes>;
+import <REV/REV.camkes>;
+
+
+assembly {
+    composition {
+      component REV rev;
+
+      connection seL4Notification
+        conn_give_string(from vm.give_string, to rev.give_string);
+      connection seL4Notification
+        conn_got_string(from rev.got_string, to vm.got_string);
+      connection seL4SharedData
+        conn_string(from rev.str, to vm.str);
+
+      connection seL4Notification
+        conn_give_gnirts(from rev.give_gnirts, to vm.give_gnirts);
+      connection seL4Notification
+        conn_got_gnirts(from vm.got_gnirts, to rev.got_gnirts);
+      connection seL4SharedData
+        conn_gnirts(from rev.rts, to vm.rts);
+  
+    }
+    configuration {
+        vm.num_extra_frame_caps = 0;
+        vm.extra_frame_map_address = 0xd0000000;
+    }
+}

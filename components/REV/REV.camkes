@@ -1,0 +1,12 @@
+component REV {
+  control;
+  dataport Buf(4096) str;
+  consumes GiveString give_string;
+  emits GotString got_string;
+  
+  dataport Buf(4096) rts;
+  emits GiveGnirts give_gnirts;
+  consumes GotGnirts got_gnirts;
+
+}
+	
